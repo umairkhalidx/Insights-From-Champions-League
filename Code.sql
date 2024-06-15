@@ -192,7 +192,7 @@ firstrow = 2 , KEEPNULLS
 );
 
 
-
+--All the players that have played under a specific manager.
 --=========================================================== QUERY 1===================================================================================
 select P.first_name,P.last_name,P.DOB,P.nationality from team T
 join manager M on M.team_id = T.ID
@@ -202,7 +202,7 @@ where M.ID=30;
 
 
 
-
+--All the matches that have been played in a specific country.
 --=========================================================== QUERY 2===================================================================================
 select M.ID,M.attendance,sl.country from match M
 join stadium S on S.ID = M.stadium_id
@@ -213,7 +213,7 @@ where sl.country = 'Italy';
 
 
 
-
+--All the teams that have won more than 3 matches in their home stadium. (Assume a team wins only if they scored more goals then other team)
 --=========================================================== QUERY 3===================================================================================
 select T.ID,T.country,T.name,count(*) as WINS from team T
 join match M on T.ID = M.home_team_id AND T.Home_stadium_id = M.stadium_id
@@ -224,7 +224,7 @@ having count(*) > 3
 
 
 
-
+--All the teams with foreign managers.
 --=========================================================== QUERY 4===================================================================================
 select M.ID,concat(M.first_name,' ',M.last_name)as NAME,M.DOB,M.nationality from manager M
 join team T on M.team_id = T.ID
@@ -233,7 +233,7 @@ where M.nationality != t.country;
 
 
 
-
+--All the matches that were played in stadiums with seating capacity greater than 60,000.
 --=========================================================== QUERY 5===================================================================================
 select M.ID,M.stadium_id,S.capacity,M.attendance from match M
 join stadium S on M.stadium_id = S.ID
@@ -242,7 +242,7 @@ where S.capacity > 60000;
 
 
 
-
+--All Goals made without an assist in 2020 by players having height greater than 180 cm.
 --=========================================================== QUERY 6===================================================================================
 select G.ID,G.player_id,G.assist,P.first_name,P.last_name,P.height from goal G
 join match M on G.match_id = M.ID
@@ -254,7 +254,7 @@ where year(Mt.Date_time)=2020 AND G.assist is NULL AND P.height>180
 
 
 
-
+--All Russian teams with win percentage less than 50% in home matches.
 --=========================================================== QUERY 7===================================================================================
 select T.ID,T.NAME,T.country,sum(case when (M.home_team_score > M.away_team_score) then 1 else 0 end)  * 100 / count(*) as WIN_PERCENTAGE from team T 
 join match M on T.ID = M.home_team_id 
@@ -267,7 +267,7 @@ sum(case when (M.home_team_score > M.away_team_score) then 1 else 0 end) * 100 /
 
 
 
-
+--All Stadiums that have hosted more than 6 matches with host team having a win percentage less than 50%.
 --=========================================================== QUERY 8===================================================================================
 select S.ID,S.city,S.name,T.ID,T.name, count(*) as NO_OF_MATCHES,(sum(case when (M.home_team_score > M.away_team_score AND M.home_team_id = T.ID) then 1 else 0 end)) * 100 / count(*) as WIN_PERCENTAGE
 from stadium S
@@ -280,7 +280,7 @@ order by S.ID
 
 
 
-
+--The season with the greatest number of left-foot goals.
 --=========================================================== QUERY 9===================================================================================
 select top 1 MT.season,count(*) as NO_OF_GOALS from goal G
 join match M on M.ID = G.match_id
@@ -292,7 +292,7 @@ order by NO_OF_GOALS desc;
 
 
 
-
+--The country with maximum number of players with at least one goal.
 --=========================================================== QUERY 10===================================================================================
 select top 1 T.country,count(*) as NUM_OF_PLAYERS from goal G
 join player P on P.ID = G.player_id
@@ -302,7 +302,7 @@ order by NUM_OF_PLAYERS desc;
  --======================================================================================================================================================
 
 
-
+--All the stadiums with greater number of left-footed shots than right-footed shots.
 --=========================================================== QUERY 11===================================================================================
 select S.ID,S.name,count(case when G.goal_des like 'left%' then 1 end) as LEFT_FOOTED_SHOTS,
 count(case when G.goal_des like 'right%'then 1 end) as RIGHST_FOOTED_SHOTS from stadium S
@@ -316,7 +316,7 @@ order by S.ID
 
 
 
-
+--All matches that were played in country with maximum cumulative stadium seating capacity order by recent first.
 --=========================================================== QUERY 12===================================================================================
 select M.ID,M.stadium_id,M.attendance from match M
 join stadium S on S.ID = M.stadium_id 
@@ -333,7 +333,7 @@ order by M.ID desc;
 
 
 
-
+--The player duo with the greatest number of goal-assist combination (i.e. pair of players that have assisted each other in more goals than any other duo).
 --=========================================================== QUERY 13===================================================================================
 select top 1 player1.ID, concat(player1.first_name,' ', player1.last_name) as FIRST_PLAYER,
 player2.ID, concat(player2.first_name,' ', player2.last_name) as SECOND_PLAYER,count(*) as GOAL_ASSIST_COMBINATIONS
@@ -359,7 +359,7 @@ order by GOAL_ASSIST_COMBINATIONS desc;
 
 
 
-
+--The team having players with more header goal percentage than any other team in 2020.
 --=========================================================== QUERY 14===================================================================================
 select top 1 table1.ID,table1.name,table1.country,table1.goal_des,(table1.GOALS_FROM_HEADER * 100/table2.TOTAL_GOALS)  as HEADER_PERCENTAGE 
 from 
@@ -388,7 +388,7 @@ order by (table1.GOALS_FROM_HEADER * 100/table2.TOTAL_GOALS) desc
 
 
 
-
+--The most successful manager of UCL (2016-202).
 --=========================================================== QUERY 15===================================================================================
 select top 1 MAN.ID,concat(MAN.first_name,' ',MAN.last_name) as NAME,MAN.nationality,MAN.DOB,count(*) as MATCHES_WON from match M
 join team T on M.home_team_id = T.ID OR M.away_team_id = T.ID
@@ -407,7 +407,7 @@ order by MATCHES_WON desc;
 
 
 
-
+--The winner teams for each season of UCL (2016-2022). 
 --=========================================================== QUERY 16===================================================================================
 select season, name
 from
