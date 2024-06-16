@@ -9,6 +9,21 @@ Our project began with identifying all functional dependencies within the datase
 
 During the Data Analysis phase, we executed various SQL queries to extract meaningful insights. These queries allowed us to study and visualize player and team performances, display matches held in different stadiums, evaluate the best performing managers, and summarize team statistics and records. Our findings offer a thorough understanding of the dynamics and outcomes within the UEFA Champions League during the specified period.
 
+### Installation
+
+To get the code running on your device you need to Install Microsoft SQL server and SQL Server Management Studio. Below I have attached a guide on how to do so
+
+https://www.youtube.com/watch?v=P6y0R3XzWlc
+
+After completing the installation open the file in SQL Server Management Studio and first highlight the first line
+"create Assignemnt 3" and run it. Afterwards, hightlight the second line "user Assignment 3" and run it.
+Now to create the database, highlight the SQL scheame (the code to create the tables) and run it.
+Now to bulk inseert data highlight all the bulk insert commands and run them.
+Remember you will need to change the paths of all the bulk inserts according to the new path where the datasets are now located.
+
+Finally to run a desired query just simply hightlight it and run.
+
+
 ### Output
 
 ### Query 1
